@@ -6,33 +6,54 @@ public class Manager : MonoBehaviour
 
     int nbActiveRunners;
     bool runnerLeftActive = true;
-    int MAX_NB_PLAYER = 4;
-    public GameObject joueur1,
-    joueur2,
-    joueur3,
-    joueur4;
-
+    public GameObject[] players;
+    int roundNumber = 1;
     void Start()
     {
+        players = GameObject.FindGameObjectsWithTag("Player");
+
+        //for (int i = 0; i < players.Length; i++)
+        //{
+        //    Debug.Log("Player Number " + i + " is named " + players[i].name);
+        //}
+
         AssignLeader();
     }
 
     private void AssignLeader()
     {
-        Random.Range(0, MAX_NB_PLAYER);
+        //players[Random.Range(0, players.Length)].isLeader = true;
     }
 
     void Update()
     {
-        if (nbActiveRunners == 0)
+        if (players.Length <= 0)
         {
             runnerLeftActive = false;
+            EndRound();
+        }
+        if (roundNumber == players.Length)
+        {
             EndGame();
         }
     }
 
     private void EndGame()
     {
+        Debug.Log("End of Game");
+        StartCoroutine(ScrollCoroutine());
+    }
+
+    IEnumerator ScrollCoroutine()
+    {
+        yield return new WaitForSeconds(3);    //Wait 3 seconds
+        Application.Quit();
+    }
+
+    private void EndRound()
+    {
+        Debug.Log("End of round" + roundNumber);
+        roundNumber++;
         throw new System.NotImplementedException();
     }
 }
